@@ -1,37 +1,38 @@
+import express from "express";
+import "dotenv/config";
+import connectDB from "./config/config.js";
+import authRoutes from "./routes/authRoutes.js";
+import cors from "cors"
 
-// // import express from "express";
-// // import "dotenv/config";
-// // import connectDB from "./config/config.js";
-// // import authRoutes from "./routes/authRoutes.js";
+const app = express();
 
-// // const app = express();
+app.use(express.json());
+app.use(cors())
 
-// // app.use(express.json());
+// Auth Routes
+app.use("/api/auth", authRoutes);
 
-// // // Auth Routes
-// // app.use("/api/auth", authRoutes);
+// Start Server after Database Connection
+const startServer = async () => {
+    try {
+        await connectDB();
 
-// // // Start Server after Database Connection
-// // const startServer = async () => {
-// //     try {
-// //         await connectDB();
+        console.log("MongoDB connected successfully!");
 
-// //         console.log("MongoDB connected successfully!");
+        const PORT = process.env.PORT || 5000;
 
-// //         const PORT = process.env.PORT || 5000;
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
 
-// //         app.listen(PORT, () => {
-// //             console.log(`Server is running on port ${PORT}`);
-// //         });
+    } catch (error) {
+        console.log("Database connection failed:", error.message);
+    }
+};
 
-// //     } catch (error) {
-// //         console.log("Database connection failed:", error.message);
-// //     }
-// // };
+startServer();
 
-// // startServer();
-
-// // export default app;
+export default app;
 
 
 // import express from "express";
@@ -104,35 +105,35 @@
 
 ///////////////////////////////////////////////////
 
-import express from "express";
-import 'dotenv/config';
-import connectDB from "./config/config.js";
-import authRoutes from "./routes/authRoutes.js";
+// import express from "express";
+// import 'dotenv/config';
+// import connectDB from "./config/config.js";
+// import authRoutes from "./routes/authRoutes.js";
 
-const app = express();
-app.use(express.json());
+// const app = express();
+// app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
+// // Routes
+// app.use('/api/auth', authRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Hurrryyyyyyyyyyyy!');
-});
+// app.get('/', (req, res) => {
+//     res.send('Hurrryyyyyyyyyyyy!');
+// });
 
-// Pehle DB connect karo, PHIR server chalao
-const startServer = async () => {
-    try {
-        await connectDB();
+// //  connect Db
+// const startServer = async () => {
+//     try {
+//         await connectDB();
 
-        const PORT = process.env.PORT || 5000;
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    } catch (error) {
-        console.log("Database connection failed:", error.message);
-    }
-};
+//         const PORT = process.env.PORT || 5000;
+//         app.listen(PORT, () => {
+//             console.log(`Server is running on port ${PORT}`);
+//         });
+//     } catch (error) {
+//         console.log("Database connection failed:", error.message);
+//     }
+// };
 
-startServer();
+// startServer();
 
-export default app; // for vercel deploy
+// export default app; // for vercel deploy

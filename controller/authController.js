@@ -126,7 +126,7 @@ export const forgotPassword = async (req, res) => {
 
         //////////////// generate token
 
-        const token = _token({ _id: user._id }, '1h');
+        const token = _token({ _id: user._id }, '15m');
 
         const redirectURL = `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
@@ -134,13 +134,34 @@ export const forgotPassword = async (req, res) => {
             to: user.email,
             subject: "Reset Password",
             html: `
-            <div style="width: 80%; margin: 0 auto; text-align: center;">
-        <h1>Reset Password</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi facilis placeat consectetur unde ipsa
-            aliquam beatae consequuntur nulla saepe? Vitae!</p>
+            
 
-        <a href="${redirectURL}" target="_blank">Reset Password</a>
-    </div>`
+<div>
+    <h1>Reset Your Password</h1>
+
+    <p>Hello,</p>
+
+    <p>
+        We received a request to reset the password associated with your account.
+        Click the button below to create a new password.
+    </p>
+
+    <a href="${redirectURL}" target="_blank">Reset Password</a>
+
+    <p>
+        If you did not request a password reset, please ignore this email.
+        Your account will remain secure, and no changes will be made.
+    </p>
+
+    <p>
+        For security reasons, this password reset link will expire in 15 minutes.
+    </p>
+
+    <p>Thank you,<br>
+    Support Team</p>
+</div>
+`
+
         });
 
         res.status(200).json({
@@ -193,4 +214,8 @@ export const resetPassword = async (req, res) => {
             message: 'Reset password fail'
         })
     }
+}
+
+export const userProfile = async (req,res)=>{
+res.status(200).json({user:req.user})
 }
